@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>NIDS Dashboard</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="header">
+    <h1>🚨 Network Intrusion Detection Dashboard</h1>
+    <div class="username">👤 Piyush Tiwari</div>
+</div>
+
+
+<div class="container">
+    <div class="dashboard">
+
+        <div class="status">
+            <div class="live">🟢 System Active</div>
+            <div class="counter">Total Alerts: <span id="count">0</span></div>
+        </div>
+
+        <div class="alert-box" id="alerts">
+            <p style="color:#22c55e;">✔️ Monitoring network traffic...</p>
+        </div>
+
+        <div class="footer">
+            Developed by Piyush Tiwari | Cybersecurity Project
+        </div>
+
+    </div>
+</div>
+
+<script>
+function loadAlerts() {
+    fetch("/alerts")
+        .then(res => res.json())
+        .then(data => {
+            document.getElementById("count").innerText = data.length;
+
+            let html = "";
+            data.forEach(alert => {
+                html += `<div class="alert">${alert}</div>`;
+            });
+
+            if(data.length === 0){
+                html = `<p style="color:#22c55e;">✔️ No threats detected.</p>`;
+            }
+
+            document.getElementById("alerts").innerHTML = html;
+        });
+}
+
+setInterval(loadAlerts, 2000);
+</script>
+
+</body>
+</html>
